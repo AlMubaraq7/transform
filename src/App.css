@@ -1,0 +1,33 @@
+#root {
+  max-width: 1280px;
+  padding: 1rem;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 4.5rem;
+  margin: 0;
+}
+input[type="file"] {
+  display: none;
+  font-family: Figtree, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+.custom-file-upload {
+  border: 1px solid #d4d4d4;
+  padding: 0.5rem 1.5rem;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 300ms ease-in-out;
+}
+.custom-file-upload:hover {
+  border: 1px solid #d4d4d4;
+  background-color: #d4d4d4;
+  color: #242424;
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 0.5rem;
+}
+.group .files-preview {
+}
