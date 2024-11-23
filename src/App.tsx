@@ -1,15 +1,20 @@
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import DropBox from "./components/DropBox";
 import { returnFileSize } from "./utils";
 function App() {
   const [files, setFiles] = useState<FileList | null>();
-  const ref = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setFiles(e.currentTarget.files);
+  };
   useEffect(() => {
     if (files) {
       console.log(files);
     }
   }, [files]);
-  const unMappedFiles = () => {
+  const FilesList = () => {
     if (files) {
       const mappedFiles = [];
       for (const file of files) {
@@ -26,12 +31,10 @@ function App() {
     <>
       <div className="group">
         <h1>Transform</h1>
-        <label htmlFor="uploads" className="custom-file-upload">
-          Upload a file
-        </label>
+        <DropBox inputRef={inputRef} setFiles={setFiles} />
         <input
-          onChange={(e) => setFiles(e.currentTarget.files)}
-          ref={ref}
+          onChange={handleFileChange}
+          ref={inputRef}
           type="file"
           name="uploads"
           id="uploads"
@@ -43,7 +46,7 @@ function App() {
         ) : (
           <p>No files selected</p>
         )}
-        <ul className="files-preview">{unMappedFiles()}</ul>
+        <ul className="files-preview">{FilesList()}</ul>
       </div>
     </>
   );
