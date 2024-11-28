@@ -1,14 +1,22 @@
 import { DragEvent } from "react";
+import { FileWithOption } from "../types";
 import "./DropBox.css";
 interface Props {
-  setFiles: (value: FileList | null) => void;
+  setFiles: (value: FileWithOption[]) => void;
   inputRef: React.RefObject<HTMLInputElement>;
 }
 export const DropBox = ({ setFiles, inputRef }: Props) => {
   const handleOnDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setFiles(e.dataTransfer.files);
+    const droppedFiles = e.dataTransfer.files
+      ? Array.from(e.dataTransfer.files)
+      : [];
+    const droppedFilesWithConversion = droppedFiles.map((file) => ({
+      file,
+      convertTo: "JPG",
+    }));
+    setFiles(droppedFilesWithConversion);
   };
   const handleOnDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();

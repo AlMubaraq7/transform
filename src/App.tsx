@@ -1,32 +1,49 @@
 import "./App.css";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { FileWithOption } from "./types";
+import { FilesWithSelection } from "./components/FilesWithSelection";
 import DropBox from "./components/DropBox";
-import { returnFileSize } from "./utils";
+
 function App() {
-  const [files, setFiles] = useState<FileList | null>();
+  // const [files, setFiles] = useState<FileList | null>();
+  const [files, setFiles] = useState<FileWithOption[]>();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setFiles(e.currentTarget.files);
+    const uploadedFiles = e.currentTarget.files
+      ? Array.from(e.currentTarget.files)
+      : [];
+    const uploadedFilesWithConversion = uploadedFiles.map((file) => ({
+      file,
+      convertTo: "JPG",
+    }));
+    setFiles(uploadedFilesWithConversion);
+  };
+  const handleOptionChange = (index: number, convertTo: string) => {
+    setFiles((prevFiles) =>
+      prevFiles!.map((fileWithOption, i) =>
+        i === index ? { ...fileWithOption, convertTo } : fileWithOption
+      )
+    );
   };
   useEffect(() => {
     if (files) {
       console.log(files);
     }
   }, [files]);
-  const FilesList = () => {
-    if (files) {
-      const mappedFiles = [];
-      for (const file of files) {
-        mappedFiles.push(
-          <li key={file.name}>
-            {file.name}, {returnFileSize(file.size)}
-          </li>
-        );
-      }
-      return mappedFiles;
-    }
-  };
+  // const FilesList = () => {
+  //   if (files) {
+  //     const mappedFiles = [];
+  //     for (const file of files) {
+  //       mappedFiles.push(
+  //         <li key={file.name}>
+  //           {file.name}, {returnFileSize(file.size)}
+  //         </li>
+  //       );
+  //     }
+  //     return mappedFiles;
+
+  // };
   return (
     <>
       <div className="group">
@@ -46,7 +63,10 @@ function App() {
         ) : (
           <p>No files selected</p>
         )}
-        <ul className="files-preview">{FilesList()}</ul>
+        <FilesWithSelection
+          files={files}
+          handleOptionChange={handleOptionChange}
+        />
       </div>
     </>
   );
