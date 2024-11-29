@@ -1,4 +1,4 @@
 export interface FileWithOption {
-  file: File | FileList;
+  file: File;
   convertTo: string;
 }

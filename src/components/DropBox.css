@@ -4,7 +4,7 @@
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--color);
+  border: 2px dashed var(--color);
   height: 350px;
   width: 400px;
   cursor: pointer;

@@ -1,6 +1,5 @@
-import { conversionOptions } from "../constants";
 import { FileWithOption } from "../types";
-import { returnFileSize } from "../utils";
+import { returnFileSize, returnPossibleConversions } from "../utils";
 
 interface FilesWithSelectionProps {
   files: FileWithOption[] | undefined;
@@ -13,29 +12,24 @@ export const FilesWithSelection = ({
   return (
     <ul>
       {files &&
-        files.map(({ file, convertTo }, index) =>
-          file instanceof File ? (
-            <li key={index}>
-              <span>
-                {file.name}, {returnFileSize(file.size)}
-              </span>
-              <select
-                value={convertTo}
-                onChange={(e) =>
-                  handleOptionChange(index, e.currentTarget.value)
-                }
-              >
-                {conversionOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </li>
-          ) : (
-            <span key={index}>This is not a valid File instance.</span>
-          )
-        )}
+        files.map(({ file, convertTo }, index) => (
+          <li key={index}>
+            <span>
+              {file.name}, {returnFileSize(file.size)}
+            </span>
+            <select
+              name="options"
+              value={convertTo}
+              onChange={(e) => handleOptionChange(index, e.currentTarget.value)}
+            >
+              {returnPossibleConversions(file.type)!.map((option) => (
+                <option key={option} value={option}>
+                  {option.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </li>
+        ))}
     </ul>
   );
 };

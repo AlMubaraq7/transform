@@ -3,9 +3,9 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FileWithOption } from "./types";
 import { FilesWithSelection } from "./components/FilesWithSelection";
 import DropBox from "./components/DropBox";
+import { returnPossibleConversions } from "./utils";
 
 function App() {
-  // const [files, setFiles] = useState<FileList | null>();
   const [files, setFiles] = useState<FileWithOption[]>();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +15,7 @@ function App() {
       : [];
     const uploadedFilesWithConversion = uploadedFiles.map((file) => ({
       file,
-      convertTo: "JPG",
+      convertTo: returnPossibleConversions(file.type)![0],
     }));
     setFiles(uploadedFilesWithConversion);
   };
@@ -31,22 +31,9 @@ function App() {
       console.log(files);
     }
   }, [files]);
-  // const FilesList = () => {
-  //   if (files) {
-  //     const mappedFiles = [];
-  //     for (const file of files) {
-  //       mappedFiles.push(
-  //         <li key={file.name}>
-  //           {file.name}, {returnFileSize(file.size)}
-  //         </li>
-  //       );
-  //     }
-  //     return mappedFiles;
-
-  // };
   return (
     <>
-      <div className="group">
+      <form className="group">
         <h1>Transform</h1>
         <DropBox inputRef={inputRef} setFiles={setFiles} />
         <input
@@ -55,7 +42,7 @@ function App() {
           type="file"
           name="uploads"
           id="uploads"
-          accept="image/*"
+          accept=".jpg, .jpeg, .pdf"
           multiple
         />
         {files && files.length != 0 ? (
@@ -67,7 +54,7 @@ function App() {
           files={files}
           handleOptionChange={handleOptionChange}
         />
-      </div>
+      </form>
     </>
   );
 }

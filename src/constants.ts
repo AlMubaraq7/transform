@@ -1,1 +1,1 @@
-export const conversionOptions = ["PDF", "DOCX", "TXT", "IMAGE"];
+export const conversionOptions = ["JPG", "PDF", "DOCX", "TXT", "IMAGE"];
